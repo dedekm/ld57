@@ -1,0 +1,55 @@
+[gd_scene load_steps=8 format=3 uid="uid://dq1fn50cgpecl"]
+
+[ext_resource type="Script" uid="uid://b64vowtdaprm" path="res://src/player.gd" id="1_eewff"]
+[ext_resource type="Script" uid="uid://dn0ykt5vhcw3n" path="res://src/main.gd" id="1_gh0ne"]
+
+[sub_resource type="NavigationMesh" id="NavigationMesh_ts572"]
+vertices = PackedVector3Array(-9.5, 0.4, -9.5, -9.5, 0.4, 9.5, 9.5, 0.4, 9.5, 9.5, 0.4, -9.5)
+polygons = [PackedInt32Array(3, 2, 0), PackedInt32Array(0, 2, 1)]
+
+[sub_resource type="BoxMesh" id="BoxMesh_eewff"]
+size = Vector3(20, 0.1, 20)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_gh0ne"]
+size = Vector3(20, 0.1, 20)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_ts572"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_ts572"]
+
+[node name="Main" type="Node3D"]
+script = ExtResource("1_gh0ne")
+
+[node name="NavigationRegion3D" type="NavigationRegion3D" parent="."]
+navigation_mesh = SubResource("NavigationMesh_ts572")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="NavigationRegion3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
+mesh = SubResource("BoxMesh_eewff")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="NavigationRegion3D/MeshInstance3D"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="NavigationRegion3D/MeshInstance3D/StaticBody3D"]
+shape = SubResource("BoxShape3D_gh0ne")
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_eewff")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Player"]
+mesh = SubResource("CapsuleMesh_ts572")
+
+[node name="RayCast3D" type="RayCast3D" parent="Player/MeshInstance3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.531643, 0)
+target_position = Vector3(0, 0, -1)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_ts572")
+
+[node name="NavigationAgent3D" type="NavigationAgent3D" parent="Player"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.797215, -0.190906, 0.572715, 0, 0.948683, 0.316229, -0.603695, -0.252102, 0.756305, 5.74672, 4.01138, 9.87155)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.610311, 0.792162, 0, -0.792162, 0.610311, -15.9441, 8.37118, 0)
