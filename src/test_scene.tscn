@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://r5tutmoswafg"]
+
+[ext_resource type="Shader" uid="uid://cshowb7gt30wx" path="res://src/shaders/outline_post.gdshader" id="1_dmphg"]
+[ext_resource type="PackedScene" uid="uid://b42as8b2iy31v" path="res://assets/fisherman.glb" id="2_l1obu"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_uo3rt"]
+size = Vector2(30, 20)
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ln8o3"]
+render_priority = 0
+shader = ExtResource("1_dmphg")
+shader_parameter/shadow_color = Color(0, 0, 0, 1)
+shader_parameter/shadow_thickness = 3.0
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_sl2yf"]
+size = Vector2(20, 20)
+
+[node name="TestScene" type="Node3D"]
+
+[node name="Camera3D" type="Camera3D" parent="."]
+transform = Transform3D(0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 5, 10, 5)
+projection = 1
+size = 15.0
+far = 150.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -0.832)
+mesh = SubResource("QuadMesh_uo3rt")
+skeleton = NodePath("../..")
+surface_material_override/0 = SubResource("ShaderMaterial_ln8o3")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.79577, 0.6056, 0, -0.6056, 0.79577, 0, 0, 18.3328)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("PlaneMesh_sl2yf")
+
+[node name="fisherman" parent="." instance=ExtResource("2_l1obu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.06403, 2.80861, 2.01945)
